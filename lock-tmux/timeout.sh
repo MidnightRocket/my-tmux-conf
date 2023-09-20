@@ -1,22 +1,20 @@
-#!/bin/sh
+#!/bin/zsh
 #
 TMUX_BIN="$(command -v tmux)"
 
 # $TMUX_BIN display -d 200 "Press C-l to unlock"
 # Wait for C-l sequence
 sleep 0.2;
-if [ "$($TMUX_BIN display -p '#{client_key_table}')" == "try_unlock" ]; then
 
-	# $TMUX_BIN switch-client -T unlock_timeout
-
-	if [ "$1" = "--send-prefix" ]; then
-		$TMUX_BIN send-keys C-b \; switch-client -T unlock_timeout
-	else
-		$TMUX_BIN switch-client -T unlock_timeout
-	fi
-
-	sleep 0.05
-	$TMUX_BIN display-message 'Outer Tmux locked. Quickly press prefix and C-l to unlock'
-#else
-#	$TMUX_BIN display "key table changed"
+if [ "$1" = "--send-prefix" ]; then
+	SEND_PREFIX_ARG='send-keys C-b;'
 fi
+
+TMUX_ARGS=($TMUX_BIN if-shell -F "#{==:#{client_key_table},try_unlock}" "$SEND_PREFIX_ARG switch-client -T unlock_timeout; run-shell -d 0.01 -bC 'display \"Outer Tmux locked. Quickly press prefix and C-l to unlock\"'" '')
+$TMUX_ARGS
+exit 0
+
+
+
+# On saving commands in variables
+# https://unix.stackexchange.com/a/444949

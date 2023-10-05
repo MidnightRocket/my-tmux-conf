@@ -19,45 +19,45 @@ percentage="$(echo "$raw_battery_info" | grep -o "[0-9]\{1,3\}%" | sed s/%//)"
 
 _get_battery_icon_based_on_charge() {
 	if [ $percentage -ge 95 ]; then
-		printf "$1"
+		printf "%s" "$1"
 	elif [ $percentage -ge 75 ]; then
-		printf "$2"
+		printf "%s" "$2"
 	elif [ $percentage -ge 50 ]; then
-		printf "$3"
+		printf "%s" "$3"
 	elif [ $percentage -ge 25 ]; then
-		printf "$4"
+		printf "%s" "$4"
 	else
-		printf "$5"
+		printf "%s" "$5"
 	fi
 }
 # Using two different function for battery_icon and color, because I 
 # like to have different weighting on them.
 _get_color_based_on_charge() {
 	if [ $percentage -ge 80 ]; then
-		printf "$1"
+		printf "%s" "$1"
 	elif [ $percentage -ge 65 ]; then
-		printf "$2"
+		printf "%s" "$2"
 	elif [ $percentage -ge 40 ]; then
-		printf "$3"
+		printf "%s" "$3"
 	elif [ $percentage -ge 15 ]; then
-		printf "$4"
+		printf "%s" "$4"
 	else
-		printf "$5"
+		printf "%s" "$5"
 	fi
 }
 
 _get_element_based_on_status() {
 	# See https://github.com/tmux-plugins/tmux-battery/blob/5c52d4f7f80384de0781c2277a8989ba98fae507/scripts/battery_icon_status.sh#L40
 	if [[ $status =~ (charged) || $status =~ (full) ]]; then
-		printf "$1"
+		printf "%s" "$1"
 	elif [[ $status =~ (^charging) ]]; then
-		printf "$2"
+		printf "%s" "$2"
 	elif [[ $status =~ (^discharging) ]]; then
-		printf "$3"
+		printf "%s" "$3"
 	elif [[ $status =~ (attached) ]]; then
-		printf "$4"
+		printf "%s" "$4"
 	else
-		printf "$5"
+		printf "%s" "$5"
 	fi
 }
 

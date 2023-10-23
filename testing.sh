@@ -7,7 +7,7 @@
 if [ -n "$TMUX" ]; then
 	name="testing-nested"
 	unset TMUX
-	export SSH_CONNECTION="simulated"
+	export SSH_CLIENT="simulated"
 else
 	name="testing"
 fi

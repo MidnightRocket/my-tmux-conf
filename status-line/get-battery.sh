@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/dash
+# https://scriptingosx.com/2020/06/about-bash-zsh-sh-and-dash-in-macos-catalina-and-beyond/
+
 # See https://github.com/cristoferfb/nerd-battery
 # See https://github.com/tmux-plugins/tmux-battery
 # See https://github.com/Code-Hex/battery
@@ -13,7 +15,9 @@ status="$(echo "$raw_battery_info" | awk -F '; *' 'NR==2 { print $2 }')"
 percentage="$(echo "$raw_battery_info" | grep -o "[0-9]\{1,3\}%" | sed s/%//)"
 
 
-
+stderr() {
+	printf "%s\n" "$@" 1>&2
+}
 
 
 _get_battery_icon_based_on_charge() {
@@ -47,15 +51,21 @@ _get_color_based_on_charge() {
 	fi
 }
 
+# https://stackoverflow.com/a/43912605
+isin() {
+    PATTERN=${2:?Two arguments required}
+    [ -z "${PATTERN##*${1}*}" ]
+}
+
 _get_element_based_on_status() {
 	# See https://github.com/tmux-plugins/tmux-battery/blob/5c52d4f7f80384de0781c2277a8989ba98fae507/scripts/battery_icon_status.sh#L40
-	if [[ $status =~ (charged) || $status =~ (full) ]]; then
-		printf "%s" "󰚥"
-	elif [[ $status =~ (^charging) ]]; then
-		printf "%s" "󱐋"
-	elif [[ $status =~ (^discharging) ]]; then
+	if isin "discharging" "$status"; then
 		printf "%s" ""
-	elif [[ $status =~ (attached) ]]; then
+	elif isin "charged" "$status" || isin "full" "$status"; then
+		printf "%s" "󰚥"
+	elif isin "charging" "$status"; then
+		printf "%s" "󱐋"
+	elif isin "attached" "$status"; then
 		printf "%s" "󱐥"
 	else
 		printf "%s" "⁉︎"

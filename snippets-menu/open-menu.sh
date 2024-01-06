@@ -28,4 +28,4 @@ if [ ! -e "$CACHE_FILE" ] || [ "$CACHE_FILE" -ot "$SNIPPETS_FILE" ]; then
 	printf "%s %s %s" "$display_menu" "$HEADER" "$display_args" > "$CACHE_FILE"
 fi
 
-exec $tmux source "$CACHE_FILE"
+exec "$tmux" source "$CACHE_FILE"

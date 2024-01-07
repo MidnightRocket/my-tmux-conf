@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/dash
 set -eu
 
 BASEDIR="$(realpath "$(dirname -- "$0")")"

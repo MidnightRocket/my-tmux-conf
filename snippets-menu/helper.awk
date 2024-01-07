@@ -30,6 +30,6 @@ function getFieldRange(start, end) {
 	next # skip to next line: https://stackoverflow.com/a/8723046
 }
 
-!/^[[:space:]]*#/ && NF > 0 {
+NF > 0 && !/^[[:space:]]*#/ {
 	print getQuotedField(1), $(++lastField), "{send-keys " getFieldRange(++lastField, NF) "}"
 }

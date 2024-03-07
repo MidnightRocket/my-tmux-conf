@@ -63,7 +63,7 @@ _get_element_based_on_status() {
 		printf "%s" ""
 	elif isin "charged" "$status" || isin "full" "$status"; then
 		printf "%s" "󰚥"
-	elif isin "charging" "$status"; then
+	elif isin "charging" "$status" || isin "finishing charge" "$status"; then
 		printf "%s" "󱐋"
 	elif isin "attached" "$status"; then
 		printf "%s" "󱐥"

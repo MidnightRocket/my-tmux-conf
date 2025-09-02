@@ -1,4 +1,6 @@
 #!/bin/dash
+# Author MidnightRocket https://github.com/MidnightRocket/my-tmux-conf
+
 set -eu
 
 BASEDIR="$(realpath "$(dirname -- "$0")")"

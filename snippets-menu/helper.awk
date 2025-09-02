@@ -1,5 +1,9 @@
 #!/usr/bin/awk -f
+# Author MidnightRocket https://github.com/MidnightRocket/my-tmux-conf
+#
 # https://stackoverflow.com/a/1418292
+
+
 BEGIN {
 	ORS=" "
 }
@@ -25,7 +29,8 @@ function getFieldRange(start, end) {
 	return substr(output, 2) # remove extra space at the beginning
 }
 
-/^''/ {
+# Detect section seperator
+/^[[:space:]]*(---)/ {
 	print "''"
 	next # skip to next line: https://stackoverflow.com/a/8723046
 }

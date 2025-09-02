@@ -1,0 +1,41 @@
+# Author MidnightRocket https://github.com/MidnightRocket/my-tmux-conf
+# Snippets Example.
+# Rename to main.snippets to use.
+#
+# Lines starting with # is a comment.
+#
+#
+# Format is as follow:
+#     "<title>" <k> "<command>" [enter]
+#
+#     <title> the text displayed in the snippet menu
+#     <k> the key shortcut. Optional use empty '' to disable keyboard shortcut. 
+#     <command> the command to be typed into the shell. 
+#     [enter] optionally enter after command is typed. 
+#
+#
+# Can only have as many snippets as there is horizontal screen space
+# If there are too many snippets for the menu to fit the screen, then no menu is displayed
+# and no error is given by tmux
+#
+# Usage WARNING: this syntax is fragile, and is only meant to accomodate my own personal needs.
+
+
+
+# Example with w as the keyboard shortcut. 
+"Weather Report" w "curl 'https://wttr.in'" enter
+
+# Create seperator line
+---- section ----
+# If the line starts with three dashes ---, then a seperator line is created in the menu
+# The rest of the line is actually optional, but improves readability.
+# I.e. this is also valid:
+---
+
+
+
+# This does not
+"echo hello world" '' "echo Hello World" enter
+
+# Do not send enter after
+"echo something" '' "echo somethin: "

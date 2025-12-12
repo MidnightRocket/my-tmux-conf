@@ -1,0 +1,81 @@
+#!/bin/sh
+set -eu
+SCRIPT_DIR="$(realpath -- "$(dirname -- "$0")")"; readonly SCRIPT_DIR;
+print() { printf "%b%b" "${1-""}" "${2-"\\n"}"; }
+stderr() { print "$@" 1>&2; }
+reportError() { stderr "$2"; return "$1"; }
+verbosePrint() { { test -n "${VERBOSE_MODE+x}" && stderr "$@"; } || true; }
+
+commandv() { command -v "$1" || reportError "$?" "Executable '$1' not found"; }
+
+
+
+
+
+
+
+unlock() {
+	tmux set -u prefix
+	tmux set -u status
+	tmux set -u status-position
+	tmux set -u key-table
+	tmux set -u mouse
+	tmux set -u message-style
+	tmux set -u remain-on-exit
+	tmux set -u remain-on-exit-format
+}
+
+lock() {
+	[ -z "${TMUX+'x'}" ] && reportError 1 "This command must be run within a tmux session. The \$TMUX was not set."
+	tmux source-file - <<-'EOF'
+	confirm-before -p " Are you sure you want to perma lock the outer tmux session? (y/N)" {
+		set prefix none
+		set status off
+		set status-position top
+		set key-table perma-locked
+		set mouse off
+		set message-style "bg=color236"
+		set remain-on-exit on # keep pane/window open even if process (shell) exits, while in locked mode
+		set remain-on-exit-format "Process in pane exited (#{?#{!=:#{pane_dead_status},},status #{pane_dead_status},}#{?#{!=:#{pane_dead_signal},},signal #{pane_dead_signal},}, #{t:pane_dead_time}) Due to tmux session being 'perma-locked' this pane was not closed automatically. (Tip: use <prefix> + x to close pane)"
+
+		run-shell -d 0.1 -bC "display-message -d 3500 \"tmux session is now perma locked. Need to run 'tmux-perma-lock --unlock' to unlock again\""
+	}
+
+	set-hook pane-died {
+		set -u prefix
+		set -u status
+		set -u status-position
+		set -u key-table
+		set -u mouse
+		set -u message-style
+		set -u remain-on-exit
+		set -u remain-on-exit-format
+	}
+	EOF
+}
+
+
+while [ "$#" -gt 0 ]; do
+	case "$1" in
+		-h | --help)
+			help # Define help function
+			exit 0
+			;;
+		-u | --unlock)
+			unlock
+			exit 0
+			;;
+		*)
+			help
+			exit 1
+			;;
+	esac
+	shift
+done
+
+
+if [ "perma-locked" = "$(tmux display -p '#{client_key_table}')" ]; then
+	reportError 1 "Already perma-locked. Use --unlock to unlock"
+fi
+
+lock

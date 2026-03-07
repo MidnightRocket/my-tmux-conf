@@ -22,7 +22,8 @@ if [ ! -e "$CACHE_FILE" ] || [ "$CACHE_FILE" -ot "$SNIPPETS_FILE" ]; then
 	# tmux display "Generating snippets"
 
 	# display_menu='display-menu -T "#[align=centre] 1Password Items " -x "#{e|-:#{client_width},#{e|+:#{popup_width},5}}" -y "#{e|+:#{popup_height},2}" -- '
-	display_menu='display-menu -T "#[align=centre] 1Password Items " -x "#{e|+:#{cursor_x},#{e|/:#{popup_width},2}}" -y "#{e|-:#{cursor_y},#{e|/:#{popup_height},2}}" -- '
+	# display_menu='display-menu -S "fg=#66CBFF" -H "fg=white,bg=#243A5B" -T "#[align=centre,bold] 1Password Items " -x "#{e|+:#{cursor_x},#{e|/:#{popup_width},2}}" -y "#{e|-:#{cursor_y},#{e|/:#{popup_height},2}}" -- '
+	display_menu='display-menu -S "fg=#66CBFF" -H "fg=white,bg=#243A5B" -T "#[align=centre,bold] 1Password Items " -x C -y "#{e|+:#{popup_height},2}" -- '
 
 	HEADER="\"-         #[align=centre]Quit this menu#[align=right]     (q)\" '' {} ''"
 

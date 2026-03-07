@@ -1,20 +1,10 @@
 #!/bin/sh
 set -eu
-SCRIPT_DIR="$(realpath -- "$(dirname -- "$0")")"; readonly SCRIPT_DIR;
-print() { printf "%b%b" "${1-""}" "${2-"\\n"}"; }
-stderr() { print "$@" 1>&2; }
-reportError() { stderr "$2"; return "$1"; }
-verbosePrint() { { test -n "${VERBOSE_MODE+x}" && stderr "$@"; } || true; }
-
-commandv() { command -v "$1" || reportError "$?" "Executable '$1' not found"; }
-
-
-
 
 tmux="${TMUX_BIN:-"$(command -v tmux)"}"
 
 "$tmux" source - <<EOF
 send-keys -l "$(op read "$1")"
-
-display-message -C "Inserted password"
+send-keys enter
+display-message -d 1200 -C "Inserted password"
 EOF

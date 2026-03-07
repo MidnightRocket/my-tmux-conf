@@ -1,0 +1,13 @@
+# Comment
+# Secret reference
+# https://developer.1password.com/docs/cli/secret-reference-syntax/
+#
+# Name     key  op secret reference
+"test key" s "op://ylksjdlslkd3lk23h2l3hsd3k3/2jk23k28jkjkjj587skdjf23mi/password"
+
+# Create seperator line
+---- section ----
+# If the line starts with three dashes ---, then a seperator line is created in the menu
+# The rest of the line is actually optional, but improves readability.
+# I.e. this is also valid:
+---

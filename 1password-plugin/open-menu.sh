@@ -4,12 +4,15 @@
 set -eu
 
 BASEDIR="$(realpath "$(dirname -- "$0")")"
-SNIPPETS_FILE="${BASEDIR}/main.1plist"
-CACHE_DIR="${BASEDIR}/.cache"
-CACHE_FILE="${CACHE_DIR}/1plist.tmux.conf"
-
 
 tmux="${TMUX_BIN:-"$(command -v tmux)"}"
+PASSWORD_LIST_NAME="$("$tmux" display-message -pF '#{?#{==:#{@PASSWORD_LIST_NAME},},main,#{@PASSWORD_LIST_NAME}}')"
+
+SNIPPETS_FILE="${BASEDIR}/$PASSWORD_LIST_NAME.1plist"
+CACHE_DIR="${BASEDIR}/.cache"
+CACHE_FILE="${CACHE_DIR}/$PASSWORD_LIST_NAME.tmux.conf"
+
+
 
 
 if [ ! -e "$CACHE_FILE" ] || [ "$CACHE_FILE" -ot "$SNIPPETS_FILE" ]; then

@@ -4,12 +4,14 @@
 set -eu
 
 BASEDIR="$(realpath "$(dirname -- "$0")")"
-SNIPPETS_FILE="${BASEDIR}/main.snippets"
-CACHE_DIR="${BASEDIR}/.cache"
-CACHE_FILE="${CACHE_DIR}/snippets.tmux.conf"
-
 
 tmux="${TMUX_BIN:-"$(command -v tmux)"}"
+SNIPPETS_MENU_NAME="$("$tmux" display-message -pF '#{?#{==:#{@SNIPPETS_MENU_NAME},},main,#{@SNIPPETS_MENU_NAME}}')"
+
+SNIPPETS_FILE="${BASEDIR}/$SNIPPETS_MENU_NAME.snippets"
+CACHE_DIR="${BASEDIR}/.cache"
+CACHE_FILE="${CACHE_DIR}/$SNIPPETS_MENU_NAME.tmux.conf"
+
 
 
 if [ ! -e "$CACHE_FILE" ] || [ "$CACHE_FILE" -ot "$SNIPPETS_FILE" ]; then
@@ -21,7 +23,7 @@ if [ ! -e "$CACHE_FILE" ] || [ "$CACHE_FILE" -ot "$SNIPPETS_FILE" ]; then
 
 	# tmux display "Generating snippets"
 
-	display_menu='display-menu -T "#[align=centre] Snippets Menu " -x "#{e|-:#{client_width},#{e|+:#{popup_width},5}}" -y "#{e|+:#{popup_height},2}" -- '
+	display_menu='display-menu -T "#[align=centre] Snippets Menu " -x "C" -y "#{e|+:#{popup_height},2}" -- '
 
 	HEADER="\"-         #[align=centre]Quit this menu#[align=right]     (q)\" '' {} ''"
 

@@ -23,13 +23,14 @@ if [ ! -e "$CACHE_FILE" ] || [ "$CACHE_FILE" -ot "$SNIPPETS_FILE" ]; then
 
 	# tmux display "Generating snippets"
 
-	display_menu='display-menu -T "#[align=centre] Snippets Menu " -x "C" -y "#{e|+:#{popup_height},2}" -- '
+	display_menu='display-menu -b rounded -T "#[align=centre] Snippets Menu "'
+	menu_location='-x "C" -y "#{e|+:#{popup_height},2}" -- '
 
-	HEADER="\"-         #[align=centre]Quit this menu#[align=right]     (q)\" '' {} ''"
+	HEADER="\"-         #[align=centre]Quit this menu#[align=right]     (q)\" 'q' {} ''"
 
 	display_args="$(awk -f "$AWK_SCRIPT" "$SNIPPETS_FILE")"
 
-	printf "%s %s %s" "$display_menu" "$HEADER" "$display_args" > "$CACHE_FILE"
+	printf "%s %s %s" "$display_menu $menu_location" "$HEADER" "$display_args" > "$CACHE_FILE"
 fi
 
 exec "$tmux" source "$CACHE_FILE"

@@ -3,8 +3,12 @@ set -eu
 
 tmux="${TMUX_BIN:-"$(command -v tmux)"}"
 
-"$tmux" source - <<EOF
-send-keys -l "$(op read "$1")"
-send-keys enter
-display-message -d 1200 -C "Inserted password"
-EOF
+if PASS="$(op read "$1")"; then
+	"$tmux" source - <<-EOF
+	send-keys -l "$PASS"
+	send-keys enter
+	display-message -d 1200 -C "Inserted password"
+	EOF
+else
+	"$tmux" display-message -d 4000 -C "#[fg=black, bg=brightred]Failed with exit code $?#{p900:}"
+fi
